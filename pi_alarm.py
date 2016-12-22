@@ -7,7 +7,6 @@
 #
 #--------------------------------------
 
-#import
 import sys
 import RPi.GPIO as GPIO
 import time
@@ -42,10 +41,10 @@ PATIO_DOOR = 18
 PIR_LOUNGE   = 23	# Normally 0 - when triggered goes O/C. So need Pi internal Pull up 	
 FRONT_DOOR = 24		# Normally 0 - when triggered goes to 5V
 
-Alarm = ""
+#Alarm = ""
 
-GREEN_LED = 0b00000001
-RED_LED = 0b00000010
+#GREEN_LED = 0b00000001
+#RED_LED = 0b00000010
 
 
 # Main program block
@@ -62,12 +61,9 @@ FD_Open_State = False
 Beam_Triggered_State = False
 Beam_Normal_State = False
 
-
-  
 GPIO.setwarnings(False)
 
 GPIO.setmode(GPIO.BCM)       # Use BCM GPIO numbers
-
 
 GPIO.setup(BEAM, GPIO.IN)  
 GPIO.setup(PATIO_DOOR, GPIO.IN) 
@@ -79,12 +75,9 @@ GPIO.setup(PATIO_DOOR, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(PIR_LOUNGE, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(FRONT_DOOR, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
-
 sleep(5)
 
-
-
-  # Main Loop
+# Main Loop
 
 try:
   logger.info("Starting pi-alarm")
