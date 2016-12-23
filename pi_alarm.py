@@ -7,6 +7,7 @@
 #
 #--------------------------------------
 
+#import
 import sys
 import RPi.GPIO as GPIO
 import time
@@ -41,10 +42,10 @@ PATIO_DOOR = 18
 PIR_LOUNGE   = 23	# Normally 0 - when triggered goes O/C. So need Pi internal Pull up 	
 FRONT_DOOR = 24		# Normally 0 - when triggered goes to 5V
 
-#Alarm = ""
+Alarm = ""
 
-#GREEN_LED = 0b00000001
-#RED_LED = 0b00000010
+GREEN_LED = 0b00000001
+RED_LED = 0b00000010
 
 
 # Main program block
@@ -61,9 +62,12 @@ FD_Open_State = False
 Beam_Triggered_State = False
 Beam_Normal_State = False
 
+
+  
 GPIO.setwarnings(False)
 
 GPIO.setmode(GPIO.BCM)       # Use BCM GPIO numbers
+
 
 GPIO.setup(BEAM, GPIO.IN)  
 GPIO.setup(PATIO_DOOR, GPIO.IN) 
@@ -75,9 +79,12 @@ GPIO.setup(PATIO_DOOR, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(PIR_LOUNGE, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(FRONT_DOOR, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
+
 sleep(5)
 
-# Main Loop
+
+
+  # Main Loop
 
 try:
   logger.info("Starting pi-alarm")
@@ -177,53 +184,53 @@ try:
 
 
 	#======================================================================================================
-	
-	#Every 5 mins send a health check
-	#Read output from sensors and send to Domoticz
-	if datetime.now() > (dt + timedelta(0,300)):
-		logger.info("Updating Health")
-	        dt = datetime.now()
-
-		GPIO_Val = GPIO.input(FRONT_DOOR)
-
-		if (GPIO_Val ==0):		#If Val is low then value for Domoticz=1, otherwise = 4 (Alarm)
-			GPIO_Val = 1
-		else:
-			GPIO_Val = 4
-
-		url = "http://controller.home:8080/json.htm?type=command&param=udevice&idx=19&nvalue={}".format( GPIO_Val )
-        	url_get(url)
-
-		GPIO_Val = GPIO.input(PATIO_DOOR)
-   
-                if (GPIO_Val ==0):              #If Val is low then value for Domoticz=1, otherwise = 4 (Alarm)
-                        GPIO_Val = 1
-                else:
-                        GPIO_Val = 4
-
-                url = "http://controller.home:8080/json.htm?type=command&param=udevice&idx=20&nvalue={}".format( GPIO_Val )
-                url_get(url)
-
-	 	GPIO_Val = GPIO.input(PIR_LOUNGE)
-   
-                if (GPIO_Val ==0):              #If Val is low then value for Domoticz=1, otherwise = 4 (Alarm)
-                        GPIO_Val = 1
-                else:
-                        GPIO_Val = 4     
-
-                url = "http://controller.home:8080/json.htm?type=command&param=udevice&idx=25&nvalue={}".format( GPIO_Val )
-                url_get(url)
-
- 		GPIO_Val = GPIO.input(BEAM)
-
-                if (GPIO_Val ==0):              #If Val is low then value for Domoticz=1, otherwise = 4 (Alarm)
-                        GPIO_Val = 1
-                else:
-                        GPIO_Val = 4     
-
-		url = "http://controller.home:8080/json.htm?type=command&param=udevice&idx=26&nvalue={}".format( GPIO_Val )
-                url_get(url)
-		logger.info("Finished Updating Health")
+#	
+#	#Every 5 mins send a health check
+#	#Read output from sensors and send to Domoticz
+#	if datetime.now() > (dt + timedelta(0,300)):
+#		logger.info("Updating Health")
+#	        dt = datetime.now()
+#
+#		GPIO_Val = GPIO.input(FRONT_DOOR)
+#
+#		if (GPIO_Val ==0):		#If Val is low then value for Domoticz=1, otherwise = 4 (Alarm)
+#			GPIO_Val = 1
+#		else:
+#			GPIO_Val = 4
+#
+#		url = "http://controller.home:8080/json.htm?type=command&param=udevice&idx=19&nvalue={}".format( GPIO_Val )
+#       	url_get(url)
+#
+#		GPIO_Val = GPIO.input(PATIO_DOOR)
+#  
+#               if (GPIO_Val ==0):              #If Val is low then value for Domoticz=1, otherwise = 4 (Alarm)
+#                        GPIO_Val = 1
+#                else:
+#                        GPIO_Val = 4
+#
+#                url = "http://controller.home:8080/json.htm?type=command&param=udevice&idx=20&nvalue={}".format( GPIO_Val )
+#                url_get(url)
+#
+#	 	GPIO_Val = GPIO.input(PIR_LOUNGE)
+#   
+#                if (GPIO_Val ==0):              #If Val is low then value for Domoticz=1, otherwise = 4 (Alarm)
+#                        GPIO_Val = 1
+#                else:
+#                        GPIO_Val = 4     
+#
+#                url = "http://controller.home:8080/json.htm?type=command&param=udevice&idx=25&nvalue={}".format( GPIO_Val )
+#                url_get(url)
+#
+# 		GPIO_Val = GPIO.input(BEAM)
+#
+#                if (GPIO_Val ==0):              #If Val is low then value for Domoticz=1, otherwise = 4 (Alarm)
+#                        GPIO_Val = 1
+#                else:
+#                        GPIO_Val = 4     
+#
+#		url = "http://controller.home:8080/json.htm?type=command&param=udevice&idx=26&nvalue={}".format( GPIO_Val )
+#                url_get(url)
+#		logger.info("Finished Updating Health")
 
 	sleep(0.1)
 
