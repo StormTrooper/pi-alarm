@@ -4,6 +4,7 @@
 #
 # Author : Greg McCarthy
 # Date   : 14/12/2016
+# Version 1.1
 #
 #--------------------------------------
 
@@ -41,12 +42,6 @@ BEAM  = 25
 PATIO_DOOR = 18
 PIR_LOUNGE   = 23	# Normally 0 - when triggered goes O/C. So need Pi internal Pull up 	
 FRONT_DOOR = 24		# Normally 0 - when triggered goes to 5V
-
-Alarm = ""
-
-GREEN_LED = 0b00000001
-RED_LED = 0b00000010
-
 
 # Main program block
 
@@ -102,6 +97,7 @@ try:
 		if (Beam_Triggered_State == False):	#So we only trigger once
 			logger.info("BEAM Trigger")
 			Beam_Triggered_State = True
+			Beam_Normal_State = False
 			url  = "http://controller.home:8080/json.htm?type=command&param=udevice&idx=26&nvalue=4"
 			url_get(url)
 			BEAM_Time1=dtm.datetime.now()
@@ -113,6 +109,7 @@ try:
                         if ((BEAM_Time2-BEAM_Time1).seconds > 60):        #If triggered only return to normal if 60 secs passed
 	                        logger.info("BEAM Normal")
         	                Beam_Normal_State = True
+				Beam_Triggered_State = False
                 	        url  = "http://controller.home:8080/json.htm?type=command&param=udevice&idx=26&nvalue=1"
                         	url_get(url)
 			
@@ -123,6 +120,7 @@ try:
 		if (FD_Open_State == False):
                         logger.info("FrontDoor Open")
                         FD_Open_State = True	# So we only send alert once
+			FD_Closed_State = False
                         url  = "http://controller.home:8080/json.htm?type=command&param=udevice&idx=19&nvalue=4"
                         url_get(url)
 			FD_Time1=dtm.datetime.now()
@@ -134,6 +132,7 @@ try:
                         if ((FD_Time2-FD_Time1).seconds > 60):        #If triggered only return to normal if 60 secs passed
 	                        logger.info("FrontDoor Closed")
         	                FD_Closed_State = True
+				FD_Open_State = False
                 	        url  = "http://controller.home:8080/json.htm?type=command&param=udevice&idx=19&nvalue=1"
                         	url_get(url)
         
@@ -144,6 +143,7 @@ try:
                 if (Patio_Door_Open_State == False):
                         logger.info("PatioDoor Open")
                         Patio_Door_Open_State = True
+			Patio_Door_Close_State = False
                         url  = "http://controller.home:8080/json.htm?type=command&param=udevice&idx=20&nvalue=4"
                         url_get(url)
 			PATIO_Time1=dtm.datetime.now()
@@ -155,6 +155,7 @@ try:
                         if ((PATIO_Time2-PATIO_Time1).seconds > 60):        #If triggered only return to normal if 60 secs passed
  				logger.info("PatioDoor Closed")
                 	        Patio_Door_Closed_State = True
+				Patio_Door_Open_State = False
                         	url  = "http://controller.home:8080/json.htm?type=command&param=udevice&idx=20&nvalue=1"
                         	url_get(url)
 
