@@ -3,8 +3,8 @@
 # Rasperry Pi Alarm
 #
 # Author : Greg McCarthy
-# Date   : 14/12/2016
-# Version 1.1
+# Date   : 24/12/2016
+# Version 1.2
 #
 #--------------------------------------
 
@@ -143,7 +143,7 @@ try:
                 if (Patio_Door_Open_State == False):
                         logger.info("PatioDoor Open")
                         Patio_Door_Open_State = True
-			Patio_Door_Close_State = False
+			Patio_Door_Closed_State = False
                         url  = "http://controller.home:8080/json.htm?type=command&param=udevice&idx=20&nvalue=4"
                         url_get(url)
 			PATIO_Time1=dtm.datetime.now()
